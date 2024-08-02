@@ -33,7 +33,6 @@ define Package/hv-tools/install
 	$(INSTALL_DIR) $(1)/usr/libexec/hypervkvpd 
 	$(INSTALL_BIN) $(LINUX_DIR)/tools/hv/hv_get_dhcp_info.sh $(1)/usr/libexec/hypervkvpd/hv_get_dhcp_info
 	$(INSTALL_BIN) $(LINUX_DIR)/tools/hv/hv_get_dns_info.sh $(1)/usr/libexec/hypervkvpd/hv_get_dns_info
-	$(INSTALL_BIN) $(LINUX_DIR)/tools/hv/hv_set_ifconfig.sh $(1)/usr/libexec/hypervkvpd/hv_set_ifconfig
 	
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/hv_fcopy_daemon $(1)/etc/init.d/hv_fcopy_daemon
