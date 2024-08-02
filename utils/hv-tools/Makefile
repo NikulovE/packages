@@ -1,17 +1,19 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=hv-tools
-PKG_VERSION:=2024.08.01
-PKG_RELEASE:=2
+PKG_VERSION:=1.0.0
+PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 define Package/hv-tools
-	SECTION:=utils
-	CATEGORY:=Utilities
-	TITLE:=Hyper-V Guest Tools
-	DEPENDS:=+procd +libpthread
+  SECTION:=utils
+  CATEGORY:=Utilities
+  SUBMENU:=Virtualization
+  TITLE:=Hyper-V Guest Tools
+  DEPENDS:=+procd +libpthread
+  DEPENDS:=@(TARGET_x86||TARGET_x86_64)
 endef
 
 define Package/hv-tools/description
