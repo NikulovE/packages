@@ -1,34 +1,31 @@
-# Пример содержимого Makefile.include
+# SPDX-License-Identifier: GPL-2.0-only
 
-# Путь к каталогу с исходными файлами
+# Определите путь к сборочной директории
 OUTPUT := $(CURDIR)/output
+BUILD_DIR := $(srctree)/tools/build
 
-# Компилятор и флаги компиляции
-CC := x86_64-openwrt-linux-musl-gcc
-CFLAGS := -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
+# Путь к сборочным файлам
+build := -f $(BUILD_DIR)/Makefile.build dir=. obj
 
-# Линковщик и флаги линковки
-LD := x86_64-openwrt-linux-musl-ld
-LDFLAGS :=
+# Сборка зависимостей
+fixdep:
+	$(Q)$(MAKE) -C $(BUILD_DIR) CFLAGS= LDFLAGS= $(OUTPUT)fixdep
 
-# Правила сборки
-all: $(ALL_PROGRAMS)
+# Очистка зависимостей
+fixdep-clean:
+	$(Q)$(MAKE) -C $(BUILD_DIR) clean
 
+# Определите правило по умолчанию, если это необходимо
+all: fixdep
+	$(Q)$(MAKE) $(build) all
+
+# Очистка собранных файлов
 clean:
-	rm -f $(ALL_PROGRAMS)
-	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
+	$(Q)$(MAKE) $(build) clean
+	$(Q)$(MAKE) fixdep-clean
 
-install: $(ALL_PROGRAMS)
-	install -d -m 755 $(DESTDIR)$(sbindir); \
-	install -d -m 755 $(DESTDIR)$(libexecdir)/hypervkvpd; \
-	install -d -m 755 $(DESTDIR)$(sharedstatedir); \
-	for program in $(ALL_PROGRAMS); do \
-		install $$program -m 755 $(DESTDIR)$(sbindir);	\
-	done; \
-	for script in $(ALL_SCRIPTS); do \
-		install $$script -m 755 $(DESTDIR)$(libexecdir)/hypervkvpd/$${script%.sh}; \
-	done
+# Пакет для установки, если требуется
+install:
+	@echo "Define installation rules if needed"
 
-FORCE:
-
-.PHONY: all install clean FORCE prepare
+.PHONY: all clean fixdep fixdep-clean install
