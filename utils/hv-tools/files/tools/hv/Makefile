@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 # Makefile for Hyper-V tools
-include ../scripts/Makefile.include
+include $(srctree)/Makefile.include
 
 sbindir ?= /usr/sbin
 libexecdir ?= /usr/libexec
