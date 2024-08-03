@@ -21,7 +21,7 @@ define Package/hv-tools/description
 endef
 
 define Build/Compile
-	$(MAKE_VARS) $(MAKE) $(MAKE_FLAGS) all -C $(PKG_BUILD_DIR)/tools/hv
+	$(MAKE_VARS) $(MAKE) $(MAKE_FLAGS) all -C .files/tools/hv
 endef
 
 define Package/hv-tools/install
