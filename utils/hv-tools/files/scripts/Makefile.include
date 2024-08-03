@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Определите путь к сборочной директории
+OUTPUT := $(CURDIR)/output
+BUILD_DIR := $(srctree)/tools/build
+
+# Путь к сборочным файлам
+build := -f $(BUILD_DIR)/Makefile.build dir=. obj
+
+# Сборка зависимостей
+fixdep:
+	$(Q)$(MAKE) -C $(BUILD_DIR) CFLAGS= LDFLAGS= $(OUTPUT)fixdep
+
+# Очистка зависимостей
+fixdep-clean:
+	$(Q)$(MAKE) -C $(BUILD_DIR) clean
+
+# Определите правило по умолчанию, если это необходимо
+all: fixdep
+	$(Q)$(MAKE) $(build) all
+
+# Очистка собранных файлов
+clean:
+	$(Q)$(MAKE) $(build) clean
+	$(Q)$(MAKE) fixdep-clean
+
+# Пакет для установки, если требуется
+install:
+	@echo "Define installation rules if needed"
+
+.PHONY: all clean fixdep fixdep-clean install
