@@ -25,7 +25,7 @@ ALL_SCRIPTS := hv_get_dhcp_info.sh hv_get_dns_info.sh hv_set_ifconfig.sh
 all: $(ALL_PROGRAMS)
 
 export srctree OUTPUT CC LD CFLAGS
-include $(srctree)/tools/build/Makefile.include
+include $(srctree)/scripts/Makefile.include
 
 HV_KVP_DAEMON_IN := $(OUTPUT)hv_kvp_daemon-in.o
 $(HV_KVP_DAEMON_IN): FORCE
