@@ -1,0 +1,34 @@
+# Пример содержимого Makefile.include
+
+# Путь к каталогу с исходными файлами
+OUTPUT := $(CURDIR)/output
+
+# Компилятор и флаги компиляции
+CC := x86_64-openwrt-linux-musl-gcc
+CFLAGS := -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
+
+# Линковщик и флаги линковки
+LD := x86_64-openwrt-linux-musl-ld
+LDFLAGS :=
+
+# Правила сборки
+all: $(ALL_PROGRAMS)
+
+clean:
+	rm -f $(ALL_PROGRAMS)
+	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
+
+install: $(ALL_PROGRAMS)
+	install -d -m 755 $(DESTDIR)$(sbindir); \
+	install -d -m 755 $(DESTDIR)$(libexecdir)/hypervkvpd; \
+	install -d -m 755 $(DESTDIR)$(sharedstatedir); \
+	for program in $(ALL_PROGRAMS); do \
+		install $$program -m 755 $(DESTDIR)$(sbindir);	\
+	done; \
+	for script in $(ALL_SCRIPTS); do \
+		install $$script -m 755 $(DESTDIR)$(libexecdir)/hypervkvpd/$${script%.sh}; \
+	done
+
+FORCE:
+
+.PHONY: all install clean FORCE prepare
