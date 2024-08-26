@@ -12,12 +12,10 @@ PKG_NAME:=curl
 PKG_VERSION:=8.9.1
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=https://github.com/curl/curl/releases/download/curl-$(subst .,_,$(PKG_VERSION))/ \
-	https://dl.uxnr.de/mirror/curl/ \
-	https://curl.askapache.com/download/ \
 	https://curl.se/download/
-PKG_HASH:=b57285d9e18bf12a5f2309fc45244f6cf9cb14734e7454121099dd0a83d669a3
+PKG_HASH:=f292f6cc051d5bbabf725ef85d432dfeacc8711dd717ea97612ae590643801e5
 
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=COPYING
@@ -60,7 +58,6 @@ PKG_CONFIG_DEPENDS:= \
   CONFIG_LIBCURL_NGHTTP2 \
   CONFIG_LIBCURL_NGHTTP3 \
   CONFIG_LIBCURL_NGTCP2 \
-  CONFIG_LIBCURL_OPENSSL_QUIC \
   \
   CONFIG_LIBCURL_COOKIES \
   CONFIG_LIBCURL_CRYPTO_AUTH \
@@ -81,8 +78,8 @@ include $(INCLUDE_DIR)/package.mk
 define Package/curl/Default
   SECTION:=net
   CATEGORY:=Network
-  URL:=http://curl.se/
-  MAINTAINER:=Stan Grishin <stangri@melmac.ca>
+  URL:=https://curl.se/
+  MAINTAINER:=Aleksey Vasilenko <aleksey.vasilenko@gmail.com>
 endef
 
 define Package/curl
@@ -114,6 +111,7 @@ TARGET_LDFLAGS += -Wl,--gc-sections
 
 CONFIGURE_ARGS += \
 	--disable-debug \
+	--disable-docs \
 	--disable-ares \
 	--enable-shared \
 	--enable-static \
@@ -140,7 +138,6 @@ CONFIGURE_ARGS += \
 	$(if $(CONFIG_LIBCURL_NGHTTP2),--with-nghttp2="$(STAGING_DIR)/usr",--without-nghttp2) \
 	$(if $(CONFIG_LIBCURL_NGHTTP3),--with-nghttp3="$(STAGING_DIR)/usr",--without-nghttp3) \
 	$(if $(CONFIG_LIBCURL_NGTCP2),--with-ngtcp2="$(STAGING_DIR)/usr",--without-ngtcp2) \
-	$(if $(CONFIG_LIBCURL_OPENSSL_QUIC),--with-openssl-quic,--without-openssl-quic) \
 	\
 	$(call autoconf_bool,CONFIG_LIBCURL_DICT,dict) \
 	$(call autoconf_bool,CONFIG_LIBCURL_FILE,file) \
