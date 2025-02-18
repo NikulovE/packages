@@ -1,16 +1,12 @@
-#
-# Makefile для сборки torrserver для OpenWrt (aarch64)
-#
-
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=torrserver
-PKG_VERSION:=134
-PKG_RELEASE:=2
+PKG_VERSION:=121
+PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/YouROK/TorrServer.git
-PKG_SOURCE_VERSION:=f76add1585131f21b2aa135d610acecc65c1e949
+PKG_SOURCE_VERSION:=97238bdcdc2b2ca8a56f60b2fbc4adec1114fc70
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_SOURCE_SUBDIR)
 
@@ -22,12 +18,11 @@ PKG_BUILD_DEPENDS:=golang/host node/host node-yarn/host
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16
 
-GO_PKG_LDFLAGS_X:= -w -s
-
 include $(INCLUDE_DIR)/package.mk
 include ../../lang/golang/golang-package.mk
 
 define Package/torrserver
+    SUBMENU:=BitTorrent
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=TorrServer - media streaming server for torrents
@@ -47,12 +42,13 @@ define Build/Compile
 		cd server ; \
 		go mod tidy ; \
 		go clean -i -r -cache ; \
-		$(call GoPackage/Build/Compile,-o torrserver ./cmd) ; \
+		GOOS=linux GOARCH=$(GO_ARCH) CGO_ENABLED=0 go build -ldflags="-w -s" -o torrserver ./cmd ; \
 	)
 endef
 
 define Package/torrserver/install
-	$(call GoPackage/Package/Install/Bin,$(1))
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/server/torrserver $(1)/usr/bin/torrserver
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/torrserver.init $(1)/etc/init.d/torrserver
 endef
