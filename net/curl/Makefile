@@ -9,13 +9,13 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/nls.mk
 
 PKG_NAME:=curl
-PKG_VERSION:=8.9.1
+PKG_VERSION:=8.12.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=https://github.com/curl/curl/releases/download/curl-$(subst .,_,$(PKG_VERSION))/ \
 	https://curl.se/download/
-PKG_HASH:=f292f6cc051d5bbabf725ef85d432dfeacc8711dd717ea97612ae590643801e5
+PKG_HASH:=0341f1ed97a26c811abaebd37d62b833956792b7607ea3f15d001613c76de202
 
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=COPYING
@@ -44,6 +44,7 @@ PKG_CONFIG_DEPENDS:= \
   CONFIG_LIBCURL_FTP \
   CONFIG_LIBCURL_GOPHER \
   CONFIG_LIBCURL_HTTP \
+  CONFIG_LIBCURL_WEBSOCKETS \
   CONFIG_LIBCURL_IMAP \
   CONFIG_LIBCURL_LDAP \
   CONFIG_LIBCURL_LDAPS \
@@ -153,6 +154,7 @@ CONFIGURE_ARGS += \
 	$(call autoconf_bool,CONFIG_LIBCURL_SMTP,smtp) \
 	$(call autoconf_bool,CONFIG_LIBCURL_TELNET,telnet) \
 	$(call autoconf_bool,CONFIG_LIBCURL_TFTP,tftp) \
+	$(call autoconf_bool,CONFIG_LIBCURL_WEBSOCKETS,websockets) \
 	\
 	$(call autoconf_bool,CONFIG_LIBCURL_COOKIES,cookies) \
 	$(call autoconf_bool,CONFIG_LIBCURL_CRYPTO_AUTH,crypto-auth) \
