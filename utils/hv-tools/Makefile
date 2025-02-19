@@ -50,4 +50,6 @@ define Package/hv-tools/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/init.d/hv_vss_daemon $(1)/etc/init.d/hv_vss_daemon
 endef
 
+MAKE_FLAGS += KERNEL_SRC=$(LINUX_DIR) ARCH=$(LINUX_KARCH)
+
 $(eval $(call BuildPackage,hv-tools))
