@@ -12,7 +12,7 @@ PKG_MIRROR_HASH:=972cf2bc9d3223c67c60d200c99b562ff2764be81ba8b8958df661004aaeb4c
 PKG_MAINTAINER:=Evgeniy Nikulov <nikulov@live.ru>
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
-
+PKG_BUILD_DEPENDS:=linux
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
 
