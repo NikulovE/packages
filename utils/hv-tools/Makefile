@@ -2,12 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=hv-tools
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=2
-
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/NikulovE/hv-tools/
-PKG_SOURCE_VERSION:=907e3722f03cfe44ca67cfeae42b4c21f0bcaf1b
-PKG_MIRROR_HASH:=972cf2bc9d3223c67c60d200c99b562ff2764be81ba8b8958df661004aaeb4ce
+PKG_RELEASE:=3
 
 PKG_MAINTAINER:=Evgeniy Nikulov <nikulov@live.ru>
 PKG_LICENSE:=MIT
@@ -16,6 +11,7 @@ PKG_LICENSE_FILES:=LICENSE
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
 
+override LINUX_DIR := $(firstword $(wildcard $(BUILD_DIR)/toolchain-*_musl/linux-$(LINUX_VERSION)))
 define Package/hv-tools
   SECTION:=utils
   CATEGORY:=Utilities
