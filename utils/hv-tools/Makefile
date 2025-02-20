@@ -15,6 +15,7 @@ PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
+include $(INCLUDE_DIR)/kernel-build.mk
 
 define Package/hv-tools
   SECTION:=utils
@@ -28,8 +29,13 @@ define Package/hv-tools/description
   This package contains Hyper-V Guest Tools for OpenWrt, including various utilities and daemons.
 endef
 
+define Build/Prepare
+	echo "SHIT"
+	$(MAKE) -f $(INCLUDE_DIR)/kernel-build.mk download
+	echo "SHIT2"
+endef
+
 define Build/Compile
-	$(MAKE) prepare
 	$(MAKE_VARS) $(MAKE) $(MAKE_FLAGS) all -C $(LINUX_DIR)/tools/hv
 endef
 
