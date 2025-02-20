@@ -15,6 +15,7 @@ PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
+include $(INCLUDE_DIR)/kernel-build.mk
 
 define Package/hv-tools
   SECTION:=utils
@@ -29,7 +30,7 @@ define Package/hv-tools/description
 endef
 
 define Build/Compile
-	$(MAKE) prepare
+	$(call Kernel/Prepare/Default)
 	$(MAKE_VARS) $(MAKE) $(MAKE_FLAGS) all -C $(LINUX_DIR)/tools/hv
 endef
 
