@@ -7,6 +7,8 @@ PKG_LICENSE:=GPL-2.0-only
 
 PKG_MAINTAINER:=Evgeniy Nikulov <nikulov@live.ru>
 
+PKG_BUILD_DIR := $(KERNEL_BUILD_DIR)/tools/hv
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/hv-tools
@@ -15,7 +17,7 @@ define Package/hv-tools
   SUBMENU:=Virtualization
   TITLE:=Hyper-V guest tools
   URL:=https://www.kernel.org
-  DEPENDS:=@(TARGET_x86||TARGET_x86_64) +kmod-hv-balloon +kmod-hv-kvp +kmod-hv-utils +kmod-hv-vmbus +libpthread
+  DEPENDS:=@(TARGET_x86||TARGET_x86_64) +libpthread
 endef
 
 define Package/hv-tools/description
@@ -25,21 +27,8 @@ define Package/hv-tools/description
 endef
 
 define Build/Prepare
-	$(INSTALL_DIR) $(PKG_BUILD_DIR)
-	wget -q -O $(PKG_BUILD_DIR)/hv_kvp_daemon.c \
-		'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/tools/hv/hv_kvp_daemon.c?h=v$(LINUX_VERSION)'
-	wget -q -O $(PKG_BUILD_DIR)/hv_vss_daemon.c \
-		'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/tools/hv/hv_vss_daemon.c?h=v$(LINUX_VERSION)'
-	wget -q -O $(PKG_BUILD_DIR)/hv_fcopy_uio_daemon.c \
-		'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/tools/hv/hv_fcopy_uio_daemon.c?h=v$(LINUX_VERSION)'
-	wget -q -O $(PKG_BUILD_DIR)/vmbus_bufring.h \
-		'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/tools/hv/vmbus_bufring.h?h=v$(LINUX_VERSION)'
-	wget -q -O $(PKG_BUILD_DIR)/vmbus_bufring.c \
-		'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/tools/hv/vmbus_bufring.c?h=v$(LINUX_VERSION)'
-	wget -q -O $(PKG_BUILD_DIR)/hv_get_dhcp_info.sh \
-		'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/tools/hv/hv_get_dhcp_info.sh?h=v$(LINUX_VERSION)'
-	wget -q -O $(PKG_BUILD_DIR)/hv_get_dns_info.sh \
-		'https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/tools/hv/hv_get_dns_info.sh?h=v$(LINUX_VERSION)'
+	mkdir -p $(PKG_BUILD_DIR)
+	$(CP) $(LINUX_DIR)/tools/hv/* $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
